@@ -1,28 +1,58 @@
 <template>
   <div id="app">
-    <img alt="Vue logo" src="./assets/logo.png">
-    <HelloWorld msg="Welcome to Your Vue.js App"/>
+    <Header></Header>
+    <Footer></Footer>
+
+    <div class="container" id="search-container">
+      <div class="row">
+        <div class="col-sm-6 ml-auto mr-auto">
+            <input v-model="searchValue" class="search-input form-control" placeholder="Type Somenthing...">
+        </div>
+      </div>
+    </div>
+  
   </div>
 </template>
 
 <script>
-import HelloWorld from './components/HelloWorld.vue'
+
+import Footer from './components/Footer';
+import Header from './components/Header';
 
 export default {
   name: 'app',
   components: {
-    HelloWorld
+    Footer,
+    Header
+  },
+  data() {
+    return {
+      searchValue: ''
+    }
+ },
+  watch: {
+    searchValue() {
+      alert(this.searchValue);
+    }
   }
 }
 </script>
 
 <style>
-#app {
-  font-family: 'Avenir', Helvetica, Arial, sans-serif;
-  -webkit-font-smoothing: antialiased;
-  -moz-osx-font-smoothing: grayscale;
-  text-align: center;
-  color: #2c3e50;
-  margin-top: 60px;
-}
+  html, body {
+    background: rgb(158, 158, 158);
+  }
+</style>
+
+<style lang="scss" scoped>
+  
+  #search-container {
+    margin-top: 25px;
+    
+    .search-input {
+      width: 100%;
+    }
+
+  }
+
 </style>

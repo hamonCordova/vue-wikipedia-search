@@ -34,6 +34,11 @@ export default {
   name: 'HelloWorld',
   props: {
     msg: String
+  },
+  methods: {
+    helloWorld() {
+      return 'Hello World!';
+    }
   }
 }
 </script>
