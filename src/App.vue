@@ -1,7 +1,6 @@
 <template>
   <div id="app">
     <Header></Header>
-    <Footer></Footer>
 
     <div class="container" id="search-container">
       <div class="row">
@@ -10,6 +9,8 @@
         </div>
       </div>
     </div>
+
+    <Footer></Footer>
   
   </div>
 </template>
@@ -32,7 +33,6 @@ export default {
  },
   watch: {
     searchValue() {
-      alert(this.searchValue);
     }
   }
 }
@@ -40,17 +40,18 @@ export default {
 
 <style>
   html, body {
-    background: rgb(158, 158, 158);
+    background: #f1f1f1
   }
 </style>
 
 <style lang="scss" scoped>
   
   #search-container {
-    margin-top: 25px;
+    margin-top: -20px;
     
     .search-input {
       width: 100%;
+      border: 1px solid #b2b2b2 !important;
     }
 
   }
