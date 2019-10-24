@@ -4,10 +4,10 @@
             <div class="input-group-prepend">
                 <span class="input-group-text bg-dark"><span class="oi text-white" data-glyph="magnifying-glass"></span></span>
             </div>
-            <input type="text" @keyup="debounceKeyup()" @keyup.enter="$emit('keyup.enter')" v-model.trim="searchValue" class="search-input form-control" placeholder="Type Somenthing...">
+            <input type="text" @keyup="debounceKeyup($event)" @keyup.enter="keyupEnterEvent()" v-model.trim="searchValue" class="search-input form-control" placeholder="Type Somenthing...">
 
         </div>
-        
+
         <ul>
             <li v-for="(item, index) in itensAutoComplete" :key="index">
                 {{ item }}
@@ -38,9 +38,14 @@ export default {
         this.debounceKeyup = _.debounce(this.keyupEvent, 200);
     },
     methods: {
-        keyupEvent() {
-            this.$emit('keyup', this.searchValue);
+        keyupEvent(event) {
+            if(event.key != 'Enter')
+                this.$emit('keyup', this.searchValue);
         },
+        keyupEnterEvent() {
+            this.itensAutoComplete = [];
+            this.$emit('keyup.enter', this.searchValue);
+        }
     }
   
 }
