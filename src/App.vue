@@ -4,14 +4,21 @@
     <Header></Header>
 
     <div class="container" id="search-container">
+      
       <div class="row">
         <div class="col-sm-6 ml-auto mr-auto">
-
-          <AutoCompleteSearch @keyup="refreshAutoComplete($event)" ref="autoComplete"></AutoCompleteSearch>
-
+          <AutoCompleteSearch @keyup="onKeyUpAutoComplete($event)" ref="autoComplete"></AutoCompleteSearch>
+          <p>{{ message }} </p>
         </div>
-
       </div>
+      
+
+      <div class="row" v-for="(article, index) in articleList" v-bind:key="index">
+        <div class="col-sm-12">
+          <ArticleItem :article="article"></ArticleItem>
+        </div>
+      </div>
+
     </div>
 
   </div>
@@ -19,29 +26,34 @@
 
 <script>
 
+import axios from 'axios';
 import Footer from './components/Footer';
 import Header from './components/Header';
 import AutoCompleteSearch from './components/AutoCompleteSearch';
-import axios from 'axios';
+import ArticleItem from './components/ArticleItem';
 
 export default {
   name: 'app',
   components: {
     Footer,
     Header,
-    AutoCompleteSearch
+    AutoCompleteSearch,
+    ArticleItem
   },
   data() {
     return {
+      articleList: [],
+      message: '',
     }
  },
  methods: {
 
-    search(limit = 20) {
-
-     // if(!this.searchValue) return;
+    searchArticles(value, limit = 20) {
 
       let vm = this;
+
+      vm.$refs.autoComplete.isLoading = true;
+      vm.articleList = [];
 
       axios.get('http://en.wikipedia.org/w/api.php', {
         params: {
@@ -49,7 +61,7 @@ export default {
           action: 'query',
           generator: 'search',
           gsrnamespace: 0,
-          gsrsearch: 'test',
+          gsrsearch: value,
           gsrlimit: 10,
           prop: 'pageimages|extracts',
           pilimit: 'max',
@@ -61,8 +73,17 @@ export default {
           origin: '*'
         }
       }).then((res) => {
-        console.log(res.request.responseURL);
-        console.log(res.data);
+        
+        if(res.data.query && res.data.query.pages) {
+          vm.articleList = res.data.query.pages;
+          vm.message = '';
+        } else {
+          vm.message = 'No Articles Found';
+        }
+
+        vm.$refs.autoComplete.itensAutoComplete = [];
+        vm.$refs.autoComplete.isLoading = false;
+
       }).catch((error) => {
         console.error(error);
       });
@@ -70,8 +91,6 @@ export default {
     },
 
     refreshAutoComplete(value, limit = 10) {
-
-     // if(!this.searchValue) return;
 
       let vm = this;
 
@@ -85,13 +104,26 @@ export default {
           format: 'json'
         }
       }).then((res) => {
-        console.log(res.data);
         vm.$refs.autoComplete.itensAutoComplete = res.data[1];
       }).catch((error) => {
         console.error(error);
       });
 
+    },
+
+    onKeyUpAutoComplete(event) {
+
+      let value = event.target.value;
+
+      if(event.key == 'Enter') {
+        this.$refs.autoComplete.itensAutoComplete = [];
+        this.searchArticles(value);
+      } else {
+        this.refreshAutoComplete(value);
+      }
+
     }
+
   }
 }
 </script>

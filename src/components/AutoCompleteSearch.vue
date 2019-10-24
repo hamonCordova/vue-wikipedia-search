@@ -2,9 +2,12 @@
     <div>   
         <div class="input-group">
             <div class="input-group-prepend">
-                <span class="input-group-text bg-dark"><span class="oi text-white" data-glyph="magnifying-glass"></span></span>
+                <i class=""></i>
+                <span class="input-group-text bg-dark">
+                    <i :class="[isLoading ? 'fas fa-spinner fa-spin' : 'fas fa-search', 'text-white']"></i>
+                </span>
             </div>
-            <input type="text" @keyup="debounceKeyup($event)" @keyup.enter="keyupEnterEvent()" v-model.trim="searchValue" class="search-input form-control" placeholder="Type Somenthing...">
+            <input type="text" @keyup="debounceKeyup($event)" v-model.trim="searchValue" class="search-input form-control" placeholder="Type Somenthing...">
 
         </div>
 
@@ -29,6 +32,7 @@ export default {
     },
     data() {
         return {
+            isLoading: false,
             searchValue: '',
             itensAutoComplete: [],
             debounceKeyup: null,
@@ -39,13 +43,12 @@ export default {
     },
     methods: {
         keyupEvent(event) {
-            if(event.key != 'Enter')
-                this.$emit('keyup', this.searchValue);
+            if(this.searchValue) {   
+                this.$emit('keyup', event);
+            } else {
+                this.itensAutoComplete = [];
+            }
         },
-        keyupEnterEvent() {
-            this.itensAutoComplete = [];
-            this.$emit('keyup.enter', this.searchValue);
-        }
     }
   
 }

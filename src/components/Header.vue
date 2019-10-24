@@ -58,7 +58,6 @@ export default {
     h1 {
         color: #fff;    
         font-size: 4.8rem;
-       
     }
 
     h2 {
