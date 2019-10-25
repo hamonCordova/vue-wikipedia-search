@@ -6,7 +6,7 @@
                 <div class="row">
                     <div class="col-sm-12">
                         <h1>Wikipedia Search</h1>
-                        <h2>Search for anything in Wikipedia API</h2>
+                        <h2>Search for anything on Wikipedia API</h2>
                     </div>
                 </div>
             </div>
@@ -35,20 +35,26 @@ export default {
 
 <style lang="scss" scoped>
 
+    $headerHeight: 350px;
+
     .header-bg {
-     //background-image: url('https://images.unsplash.com/photo-1427504494785-3a9ca7044f45?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&w=750&q=80');
-      background-image: url('https://images.unsplash.com/photo-1533669955142-6a73332af4db?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&w=839&q=80');
-    //    background-image: url('https://images.unsplash.com/photo-1505664063603-28e48ca204eb?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&w=750&q=80');
+        background-image: url('https://images.wallpaperscraft.com/image/books_library_collection_125386_2560x1080.jpg');
         background-size: cover;  
-        background-position: 0px -180px;
-        height: 200px;
+        height: $headerHeight;
         filter: grayscale(0%);
-        padding: 20px 0px;
+        padding: 0.1px 0px;
+
+        @media screen and (min-width: 768px) {
+            $headerHeight: 250px;
+            height: $headerHeight;
+        }
+
     }
 
     .header-content {
-        margin-top: 20px;
-         text-shadow: 2px 2px 3px rgba(0,0,0,0.4);
+        margin-top: calc((#{$headerHeight} / 4) - 10px);
+        text-shadow: 2px 2px 3px rgba(0,0,0,0.4);
+        padding: 5px;
     }
 
     header {
@@ -57,7 +63,12 @@ export default {
 
     h1 {
         color: #fff;    
-        font-size: 4.8rem;
+        font-size: 4.2rem;
+
+        @media screen and (min-width: 768px) {
+            font-size: 4.8rem;
+        }
+
     }
 
     h2 {
@@ -65,8 +76,13 @@ export default {
         font-weight: normal;
         font-size: 1.2rem;
         position: relative;
-        top: -18px;
-        left: 27px;
+       
+
+        @media screen and (min-width: 768px) {
+            top: -18px;
+            left: 27px;
+        }
+
     }
 
 </style>

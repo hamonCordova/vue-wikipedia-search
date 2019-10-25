@@ -3,17 +3,16 @@
 
     <Header></Header>
 
-    <div class="container" id="search-container">
+    <div class="container">
       
-      <div class="row">
-        <div class="col-sm-6 ml-auto mr-auto">
-          <AutoCompleteSearch @keyup="onKeyUpAutoComplete($event)" ref="autoComplete"></AutoCompleteSearch>
+      <div class="row" id="search-container">
+        <div class="col-sm-12 col-md-6 ml-auto mr-auto">
+          <AutoCompleteSearch @search="searchArticles($event)" @keyup="onKeyUpAutoComplete($event)" ref="autoComplete"></AutoCompleteSearch>
           <p>{{ message }} </p>
         </div>
       </div>
-      
 
-      <div class="row" v-for="(article, index) in articleList" v-bind:key="index">
+      <div class="row articles" v-for="(article, index) in articleList" v-bind:key="index">
         <div class="col-sm-12">
           <ArticleItem :article="article"></ArticleItem>
         </div>
@@ -46,6 +45,11 @@ export default {
       message: '',
     }
  },
+ created() {
+   setTimeout(() => {
+    this.searchArticles('google');
+   }, 10);
+ },
  methods: {
 
     searchArticles(value, limit = 20) {
@@ -54,6 +58,7 @@ export default {
 
       vm.$refs.autoComplete.isLoading = true;
       vm.articleList = [];
+      vm.message = '';
 
       axios.get('http://en.wikipedia.org/w/api.php', {
         params: {
@@ -62,7 +67,7 @@ export default {
           generator: 'search',
           gsrnamespace: 0,
           gsrsearch: value,
-          gsrlimit: 10,
+          gsrlimit: limit,
           prop: 'pageimages|extracts',
           pilimit: 'max',
           piprop: 'original',
@@ -81,7 +86,7 @@ export default {
           vm.message = 'No Articles Found';
         }
 
-        vm.$refs.autoComplete.itensAutoComplete = [];
+        vm.$refs.autoComplete.clearAutoComplete();
         vm.$refs.autoComplete.isLoading = false;
 
       }).catch((error) => {
@@ -90,7 +95,7 @@ export default {
 
     },
 
-    refreshAutoComplete(value, limit = 10) {
+    refreshAutoComplete(value, limit = 6) {
 
       let vm = this;
 
@@ -104,7 +109,10 @@ export default {
           format: 'json'
         }
       }).then((res) => {
-        vm.$refs.autoComplete.itensAutoComplete = res.data[1];
+        if(res) {
+          vm.$refs.autoComplete.clearAutoComplete();
+          vm.$refs.autoComplete.itensAutoComplete = res.data[1].slice(1);
+        }
       }).catch((error) => {
         console.error(error);
       });
@@ -116,8 +124,14 @@ export default {
       let value = event.target.value;
 
       if(event.key == 'Enter') {
-        this.$refs.autoComplete.itensAutoComplete = [];
-        this.searchArticles(value);
+
+         if(value) {
+          this.$refs.autoComplete.clearAutoComplete();
+          this.searchArticles(value);
+        } else {
+          this.articleList = [];
+        }
+
       } else {
         this.refreshAutoComplete(value);
       }
@@ -127,7 +141,6 @@ export default {
   }
 }
 </script>
-
 
 <style lang="scss" scoped>
 
@@ -146,6 +159,10 @@ export default {
     color: $primaryColor !important;
     background-color: $primaryColor !important;
     border: 1px solid #b2b2b2 !important;
+  }
+
+  .container {
+    padding-bottom: 40px;
   }
 
 </style>
