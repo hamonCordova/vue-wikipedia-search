@@ -80,7 +80,7 @@ export default {
 
         @media screen and (min-width: 768px) {
             top: -18px;
-            left: 27px;
+            left: 35px;
         }
 
     }

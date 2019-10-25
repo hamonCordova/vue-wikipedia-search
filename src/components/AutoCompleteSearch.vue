@@ -49,23 +49,32 @@ export default {
         }
     },
     created() {
-        this.debounceKeyup = _.debounce(this.keyupEvent, 300);
+        this.debounceKeyup = _.debounce(this.keyupEvent, 100);
         this.debounceBlur = _.debounce(this.clearAutoComplete, 100);
     },
     methods: {
         keyupEvent(event) {
 
             let keyPressed = event.key;
-            let keysAuthorized = ['ArrowDown', 'ArrowUp', 'ArrowRight', 'ArrowLeft']
-            
-            if(keysAuthorized.includes(keyPressed)) return;
+            let keysAuthorized = ['Delete', 'Space', 'Backspace', 'Enter'];
+
+            /*Check if "keyPressed" is NOT a number or character
+            AND is NOT include in the authorized keys array */
+            if(!(/^[a-z0-9]$/i.test(keyPressed)) && !(keysAuthorized.includes(keyPressed))) {
+                return;
+            }
         
             if(!this.searchValue) {
                 this.itensAutoComplete = [];
+            } else {
+                this.lastSearchValue = this.searchValue;
             }
-             
-            this.lastSearchValue = this.searchValue;
-            this.$emit('keyup', event);
+
+            if(keyPressed == 'Enter') {
+                this.search();
+            } else {
+                this.$emit('keyup', event);
+            }
 
         },
         clearAutoComplete() {
@@ -123,6 +132,7 @@ export default {
         border: 1px solid #ccc;
         border-radius: 0 0 10px 10px;
         padding-left: 0px;
+        box-shadow: 1px 1px 1px rgba(0,0,0,0.1);
 
         .autocomplete-item {
             text-decoration: none;

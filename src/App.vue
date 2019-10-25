@@ -45,19 +45,19 @@ export default {
       message: '',
     }
  },
- created() {
-   setTimeout(() => {
-    this.searchArticles('google');
-   }, 10);
- },
  methods: {
 
     searchArticles(value, limit = 20) {
 
       let vm = this;
 
-      vm.$refs.autoComplete.isLoading = true;
-      vm.articleList = [];
+      if(value) {
+        this.$refs.autoComplete.clearAutoComplete();
+         vm.$refs.autoComplete.isLoading = true;
+      } else {
+        this.articleList = [];
+      }
+
       vm.message = '';
 
       axios.get('http://en.wikipedia.org/w/api.php', {
@@ -110,6 +110,8 @@ export default {
         }
       }).then((res) => {
         if(res) {
+          /*Clean the auto complete list then get all articles, but not the first,
+          that is only the value searched */
           vm.$refs.autoComplete.clearAutoComplete();
           vm.$refs.autoComplete.itensAutoComplete = res.data[1].slice(1);
         }
@@ -122,18 +124,10 @@ export default {
     onKeyUpAutoComplete(event) {
 
       let value = event.target.value;
-
-      if(event.key == 'Enter') {
-
-         if(value) {
-          this.$refs.autoComplete.clearAutoComplete();
-          this.searchArticles(value);
-        } else {
-          this.articleList = [];
-        }
-
-      } else {
+      if(value) {
         this.refreshAutoComplete(value);
+      } else {
+        this.$refs.autoComplete.clearAutoComplete();
       }
 
     }
