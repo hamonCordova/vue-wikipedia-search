@@ -60,7 +60,7 @@ export default {
 
       vm.message = '';
 
-      axios.get('http://en.wikipedia.org/w/api.php', {
+      axios.get('https://en.wikipedia.org/w/api.php', {
         params: {
           format: 'json',
           action: 'query',
@@ -99,7 +99,7 @@ export default {
 
       let vm = this;
 
-      axios.get('http://en.wikipedia.org/w/api.php', {
+      axios.get('https://en.wikipedia.org/w/api.php', {
         params: {
           action: 'opensearch',
           search: value, 
