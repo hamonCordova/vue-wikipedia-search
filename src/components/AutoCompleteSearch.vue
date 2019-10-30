@@ -55,13 +55,18 @@ export default {
     methods: {
         keyupEvent(event) {
 
+
             let keyPressed = event.key;
             let keysAuthorized = ['Delete', 'Space', 'Backspace', 'Enter'];
 
-            /*Check if "keyPressed" is NOT a number or character
-            AND is NOT include in the authorized keys array */
-            if(!(/^[a-z0-9]$/i.test(keyPressed)) && !(keysAuthorized.includes(keyPressed))) {
-                return;
+            /*  The 'Unidentfied' is checked because on smarthphone 'keyup' event dosent return any 'event.key'.
+                Check if "keyPressed" is NOT a number or character
+                AND is NOT include in the authorized keys array
+            */
+            if(keyPressed && keyPressed != 'Unidentified') {
+                if(!(/^[a-z0-9]$/i.test(keyPressed)) && !(keysAuthorized.includes(keyPressed)) ) {
+                    return;
+                }
             }
         
             if(!this.searchValue) {

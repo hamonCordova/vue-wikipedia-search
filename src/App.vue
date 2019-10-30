@@ -60,7 +60,7 @@ export default {
 
       vm.message = '';
 
-      axios.get('http://en.wikipedia.org/w/api.php', {
+      axios.get('https://en.wikipedia.org/w/api.php', {
         params: {
           format: 'json',
           action: 'query',
@@ -84,6 +84,7 @@ export default {
           vm.message = '';
         } else {
           vm.message = 'No Articles Found';
+          vm.articleList = [];
         }
 
         vm.$refs.autoComplete.clearAutoComplete();
@@ -99,7 +100,7 @@ export default {
 
       let vm = this;
 
-      axios.get('http://en.wikipedia.org/w/api.php', {
+      axios.get('https://en.wikipedia.org/w/api.php', {
         params: {
           action: 'opensearch',
           search: value, 

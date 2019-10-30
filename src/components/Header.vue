@@ -38,8 +38,9 @@ export default {
     $headerHeight: 350px;
 
     .header-bg {
-        background-image: url('https://images.wallpaperscraft.com/image/books_library_collection_125386_2560x1080.jpg');
+        background-image: url('../assets/books_background.jpg');
         background-size: cover;  
+        background-position: 0px -120px;
         height: $headerHeight;
         filter: grayscale(0%);
         padding: 0.1px 0px;
@@ -54,7 +55,7 @@ export default {
     .header-content {
         margin-top: calc((#{$headerHeight} / 4) - 10px);
         text-shadow: 2px 2px 3px rgba(0,0,0,0.4);
-        padding: 5px;
+        padding-top: 5px;
     }
 
     header {
@@ -76,7 +77,6 @@ export default {
         font-weight: normal;
         font-size: 1.2rem;
         position: relative;
-       
 
         @media screen and (min-width: 768px) {
             top: -18px;
